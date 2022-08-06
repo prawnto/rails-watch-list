@@ -7,14 +7,16 @@ class BookmarksController < ApplicationController
   end
 
   def create
-    @bookmark = @list.bookmarks.create(bookmark_params)
-    # Bookmark.new(bookmark_params)
-    # @bookmark.list = @list
-    if @bookmark.save
-      redirect_to list_path(@list)
-    else
-      render :new, status: :unprocessable_entity
-    end
+    # @bookmark = @list.bookmarks.create(bookmark_params)
+    @bookmark = Bookmark.new(bookmark_params)
+    @bookmark.list = @list
+    flash[:notice] = @bookmark.errors.full_messages.to_sentence unless @bookmark.save
+    redirect_to list_path(@list)
+    # if @bookmark.save
+    #   redirect_to list_path(@list)
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
   end
 
   def destroy
